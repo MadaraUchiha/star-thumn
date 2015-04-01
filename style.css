@@ -42,3 +42,7 @@
 #thumbs .img {
 	background-image: url('https://i.stack.imgur.com/Da7jC.png') !important;
 }
+
+#thumbs .sidebar-vote.stars.user-star .vote {
+	color: gold;
+}

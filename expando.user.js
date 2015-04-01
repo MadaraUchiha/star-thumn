@@ -58,7 +58,6 @@
         return isOnebox(li.id.replace('summary_', ''));
     }
 
-
     function toThumbnail(li) {
         // Purely so that the current scripts won't break!
         var newLi = document.createElement('li');
@@ -68,6 +67,10 @@
 
         var imgA = li.querySelector('a').cloneNode(true);
         var starSpan = li.querySelector('span').cloneNode(true);
+
+        var voteSpan = starSpan.querySelector('.img.vote')
+        voteSpan.textContent = starSpan.classList.contains('owner-star') ? '✪' : '★';
+        voteSpan.classList.remove('img');
 
         var img = new Image();
         img.src = imgA.href;
