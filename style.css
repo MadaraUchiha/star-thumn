@@ -1,0 +1,9 @@
+#thumbs {
+    display: flex;
+}
+#thumbs li {
+    list-style-type: none;
+}
+#thumbs li > span {
+    display: none;
+}
