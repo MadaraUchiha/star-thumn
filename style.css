@@ -30,14 +30,13 @@
 	position: absolute;
 	top: 2px;
 	left: 2px;
-	background: hsla(0, 0%, 0%, .5);
+	text-shadow: 2px 2px 5px black;
 	color: white;
 	cursor: pointer;
 	transition: all .3s;
 }
 #thumbs figure:hover .sidebar-vote.stars {
 	transform: scale(1.5);
-	background-color: black;
 }
 #thumbs .img {
 	background-image: url('https://i.stack.imgur.com/Da7jC.png') !important;
