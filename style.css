@@ -39,3 +39,6 @@
 	transform: scale(1.5);
 	background-color: black;
 }
+#thumbs .img {
+	background-image: url('https://i.stack.imgur.com/Da7jC.png') !important;
+}
