@@ -8,13 +8,13 @@
 
     function xhr(url, method, data) {
         data = data || {};
-        method = method || "GET"
+        method = method || "GET";
 
         let serialize = function(obj) {
             return Object.keys(obj).map(function(key) {
                 return key + '=' + obj[key];
             }).join('&');
-        }
+        };
         return new Promise(function(resolve, reject) {
             let req = new XMLHttpRequest();
             req.onload = function() { resolve(req.responseText); };
@@ -28,7 +28,7 @@
             req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             req.send(serialize(data));
-        })
+        });
     }
 
     function isOnebox(msgId) {
