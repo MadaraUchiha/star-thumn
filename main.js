@@ -35,7 +35,7 @@
         return xhr('/message/' + msgId, 'POST', {plain: true})
             .then(function(response) {
                 //          vvvvvvvvvvvvvv just URL vvvvvvvvvvvvvvv vvvvvvvvvvvvvvvvv just linked image vvvvvvvvvvvvvvvvv
-                return /^(?:!?https?:\/\/[^ ]+\.(?:jpg|png|gif|svn)|\[[^]]+\]\(!?https?:\/\/[^ ]+\.(?:jpg|png|gif|svn)\))$/.test(response);
+                return /^(?:!?https?:\/\/[^ ]+\.(?:jpe?g|png)|\[[^]]+\]\(!?https?:\/\/[^ ]+\.(?:jpe?g|png)\))$/.test(response);
             });
     }
 
@@ -80,7 +80,7 @@
         emptyElement(thumbs);
 
         let thumbnailWorthy = [].filter.call(stars.querySelectorAll('a'), function justThoseWithImageLinks(link) {
-            return /(?:jpg|png|gif|svn)$/.test(link.href);
+            return /(?:jpe?g|png)$/.test(link.href);
         })
         .map(function getParent(link) {
             return link.parentNode;
