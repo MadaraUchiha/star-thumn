@@ -9,11 +9,9 @@
 #thumbs li {
     list-style-type: none;
     padding: 10px;
-    flex: 1;
+    max-width: 25%;
 }
-#thumbs a, #thumbs img {
-	display: block;
-}
+
 #thumbs li > span, .hidden {
     display: none !important;
 }
@@ -28,16 +26,16 @@
 }
 
 #thumbs .sidebar-vote.stars {
-	transform-origin: top right;
+	transform-origin: top left;
 	position: absolute;
 	top: 2px;
-	right: 2px;
+	left: 2px;
 	background: hsla(0, 0%, 0%, .5);
 	color: white;
 	cursor: pointer;
 	transition: all .3s;
 }
-#thumbs .sidebar-vote.stars:hover {
+#thumbs figure:hover .sidebar-vote.stars {
 	transform: scale(1.5);
 	background-color: black;
 }
