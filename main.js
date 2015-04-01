@@ -1,8 +1,23 @@
+// ==UserScript==
+// @name         Star Thumbnail Expando
+// @resource     STYLE  https://rawgit.com/MadaraUchiha/star-thumn/master/style.css
+// @version      0.1
+// @match        *://chat.stackexchange.com
+// @match        *://chat.stackoverflow.com
+// @match        *://chat.meta.stackexchange.com
+// @grant        GM_addStyle
+// @grant        GM_getResourceText
+// ==/UserScript==
+
 (function(){window.addEventListener('load', function() {
     'use strict';
 
-    let stars = document.getElementById('starred-posts');
-    let thumbs = document.createElement('div');
+    var cssTxt  = GM_getResourceText ("STYLE");
+    GM_addStyle (cssTxt);
+
+
+    var stars = document.getElementById('starred-posts');
+    var thumbs = document.createElement('div');
     thumbs.id = 'thumbs';
     stars.appendChild(thumbs);
 
@@ -10,13 +25,13 @@
         data = data || {};
         method = method || "GET";
 
-        let serialize = function(obj) {
+        var serialize = function(obj) {
             return Object.keys(obj).map(function(key) {
                 return key + '=' + obj[key];
             }).join('&');
         };
         return new Promise(function(resolve, reject) {
-            let req = new XMLHttpRequest();
+            var req = new XMLHttpRequest();
             req.onload = function() { resolve(req.responseText); };
             req.onerror = reject;
 
@@ -46,15 +61,15 @@
 
     function toThumbnail(li) {
         // Purely so that the current scripts won't break!
-        let newLi = document.createElement('li');
+        var newLi = document.createElement('li');
         newLi.id = li.id;
 
-        let figure = document.createElement('figure');
+        var figure = document.createElement('figure');
 
-        let imgA = li.querySelector('a').cloneNode(true);
-        let starSpan = li.querySelector('span').cloneNode(true);
+        var imgA = li.querySelector('a').cloneNode(true);
+        var starSpan = li.querySelector('span').cloneNode(true);
 
-        let img = new Image();
+        var img = new Image();
         img.src = imgA.href;
 
         if (!imgA.href.includes(imgA.textContent)) { imgA.title = imgA.textContent; }
@@ -79,7 +94,7 @@
         console.info('RENDERING EVERYTHING');
         emptyElement(thumbs);
 
-        let thumbnailWorthy = [].filter.call(stars.querySelectorAll('a'), function justThoseWithImageLinks(link) {
+        var thumbnailWorthy = [].filter.call(stars.querySelectorAll('a'), function justThoseWithImageLinks(link) {
             return /(?:jpg|png|gif|svn)$/.test(link.href);
         })
         .map(function getParent(link) {
