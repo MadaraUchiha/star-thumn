@@ -43,12 +43,6 @@
         return isOnebox(li.id.replace('summary_', ''));
     }
 
-    let thumbnailWorthy = [].filter.call(stars.querySelectorAll('a'), function(link) {
-        return /(?:jpg|png|gif|svn)$/.test(link.href);
-    })
-    .map(function getParent(link) {
-        return link.parentNode;
-    })
 
     function toThumbnail(li) {
         // Purely so that the current scripts won't break!
@@ -57,39 +51,62 @@
 
         let figure = document.createElement('figure');
 
-        let imgA = li.querySelector('a');
-        let starSpan = li.querySelector('span');
+        let imgA = li.querySelector('a').cloneNode(true);
+        let starSpan = li.querySelector('span').cloneNode(true);
 
         let img = new Image();
         img.src = imgA.href;
-        img.style.maxWidth = '100px';
-        img.style.maxHeight = '100px';
 
-        figure.appendChild(img);
+        if (!imgA.href.includes(imgA.textContent)) { imgA.title = imgA.textContent; }
+        imgA.textContent = '';
+
+        imgA.appendChild(img);
+        figure.appendChild(imgA);
         figure.appendChild(starSpan);
 
         newLi.appendChild(figure);
 
         return newLi;
-        return li; // Todo
     }
-    
-    Promise.all(thumbnailWorthy)
-        .then(function(thumbnailWorthyArray) {
-            return thumbnailWorthyArray.filter(isLiOnebox);
+
+    function emptyElement(node) {
+        while (node.firstChild) {
+            node.removeChild(node.firstChild);
+        }
+    }
+
+    function renderAllThumbnails() {
+        console.info('RENDERING EVERYTHING');
+        emptyElement(thumbs);
+
+        let thumbnailWorthy = [].filter.call(stars.querySelectorAll('a'), function justThoseWithImageLinks(link) {
+            return /(?:jpg|png|gif|svn)$/.test(link.href);
         })
-        .then(function prepareGround(confirmedThumbnails) {
-            confirmedThumbnails.forEach(function(li) {
-                li.parentNode.removeChild(li);
-            });
-            return confirmedThumbnails;
-        })
-        .then(function(confirmedThumbnails) {
-            return confirmedThumbnails.map(toThumbnail);
-        })
-        .then(function(images) {
-            images.forEach(thumbs.appendChild.bind(thumbs))
-        })
-        .then(console.log.bind(console));
+        .map(function getParent(link) {
+            return link.parentNode;
+        });
+        Promise.all(thumbnailWorthy)
+            .then(function(thumbnailWorthyArray) {
+                return thumbnailWorthyArray.filter(isLiOnebox);
+            })
+            .then(function prepareGround(confirmedThumbnails) {
+                confirmedThumbnails.forEach(function(li) {
+                    li.classList.add('hidden');
+                });
+                return confirmedThumbnails;
+            })
+            .then(function(confirmedThumbnails) {
+                return confirmedThumbnails.map(toThumbnail);
+            })
+            .then(function(images) {
+                images.forEach(thumbs.appendChild.bind(thumbs));
+            })
+            .then(console.info.bind(console));
+    }
+
+    (new MutationObserver(renderAllThumbnails))
+        .observe(stars.parentNode, {childList: true, subTree: true, characterData: true, attributes: true});
+
+    setTimeout(renderAllThumbnails, 0);
 
 });})();

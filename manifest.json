@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Star Thumbnail Expando",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Expands starred oneboxed messages in the sidebar to full thumbnails.",
 
     "content_scripts": [

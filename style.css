@@ -1,9 +1,43 @@
+#thumbs, #thumbs * {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
 #thumbs {
     display: flex;
 }
 #thumbs li {
     list-style-type: none;
+    padding: 10px;
+    flex: 1;
 }
-#thumbs li > span {
-    display: none;
+#thumbs a, #thumbs img {
+	display: block;
+}
+#thumbs li > span, .hidden {
+    display: none !important;
+}
+
+#thumbs figure {
+	position: relative;
+}
+
+#thumbs img {
+	max-height: 100px;
+	max-width: 100px;
+}
+
+#thumbs .sidebar-vote.stars {
+	transform-origin: top right;
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	background: hsla(0, 0%, 0%, .5);
+	color: white;
+	cursor: pointer;
+	transition: all .3s;
+}
+#thumbs .sidebar-vote.stars:hover {
+	transform: scale(1.5);
+	background-color: black;
 }
