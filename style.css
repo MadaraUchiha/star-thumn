@@ -26,17 +26,19 @@
 }
 
 #thumbs .sidebar-vote.stars {
-	transform-origin: top left;
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	text-shadow: 2px 2px 5px black;
-	color: white;
-	cursor: pointer;
-	transition: all .3s;
+    transform-origin: top left;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    text-shadow: 0 0 2px black, 0 0 2px black;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    transition: all .3s;
 }
 #thumbs figure:hover .sidebar-vote.stars {
-	transform: scale(1.5);
+    transform: scale(1.5);
+    background-color: hsla(0, 0%, 0%, .5);
 }
 #thumbs .img {
     background-image: url('https://i.stack.imgur.com/Da7jC.png') !important;
