@@ -31,14 +31,14 @@
     top: 2px;
     left: 2px;
     text-shadow: 0 0 2px black, 0 0 2px black;
-    background-color: transparent;
+    opacity: 0;
     color: white;
     cursor: pointer;
     transition: all .3s;
 }
 #thumbs figure:hover .sidebar-vote.stars {
-    transform: scale(1.5);
-    background-color: hsla(0, 0%, 0%, .5);
+    opacity: 1;
+    transform: scale(1.2);
 }
 #thumbs .img {
     background-image: url('https://i.stack.imgur.com/Da7jC.png') !important;
