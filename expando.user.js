@@ -21,6 +21,12 @@
     thumbs.id = 'thumbs';
     stars.appendChild(thumbs);
 
+    if (!String.prototype.includes) {
+        String.prototype.include = function(needle) {
+            return this.indexOf(needle) !== -1;
+        }
+    }
+
     function xhr(url, method, data) {
         data = data || {};
         method = method || "GET";
