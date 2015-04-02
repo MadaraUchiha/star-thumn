@@ -22,7 +22,7 @@
     stars.appendChild(thumbs);
 
     if (!String.prototype.includes) {
-        String.prototype.include = function(needle) {
+        String.prototype.includes = function(needle) {
             return this.indexOf(needle) !== -1;
         }
     }
