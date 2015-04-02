@@ -56,7 +56,7 @@
         return xhr('/message/' + msgId, 'POST', {plain: true})
             .then(function(response) {
                 //          vvvvvvvvvvvvvv just URL vvvvvvvvvvvvvvv vvvvvvvvvvvvvvvvv just linked image vvvvvvvvvvvvvvvvv
-                return /^(?:!?https?:\/\/[^ ]+\.(?:jpe?g|png)|\[[^]]+\]\(!?https?:\/\/[^ ]+\.(?:jpe?g|png)\))$/.test(response);
+                return /^!?https?:\/\/|^(?:https?:\/\/[^ ]+\.(?:jpe?g|png)|\[[^]]+\]\(https?:\/\/[^ ]+\.(?:jpe?g|png)\))$/.test(response);
             });
     }
 
