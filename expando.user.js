@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/MadaraUchiha/star-thumn/master/style.css
-// @version      0.2.6
+// @version      0.2.7
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -93,7 +93,8 @@
             img.src = imgA.href;
         }
 
-        if (!imgA.href.includes(imgA.textContent)) { imgA.title = imgA.textContent; }
+        //         Not dots! This is a single character! vvv
+        if (!imgA.href.includes(imgA.textContent.replace('…', ''))) { imgA.title = imgA.textContent; }
         imgA.textContent = '';
 
         imgA.appendChild(img);
