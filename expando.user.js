@@ -22,7 +22,7 @@
     stars.appendChild(thumbs);
 
     if (!String.prototype.includes) {
-        String.prototype.include = function(needle) {
+        String.prototype.includes = function(needle) {
             return this.indexOf(needle) !== -1;
         }
     }
@@ -79,6 +79,7 @@
         voteSpan.classList.remove('img');
 
         var img = new Image();
+        if (imgA.)
         img.src = imgA.href;
 
         if (!imgA.href.includes(imgA.textContent)) { imgA.title = imgA.textContent; }
