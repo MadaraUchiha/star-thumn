@@ -73,7 +73,19 @@
         voteSpan.classList.remove('img');
 
         var img = new Image();
-        img.src = imgA.href;
+        if (imgA.href.includes('googledrive.com')) {
+            var hasThumb = imgA.href.includes('_thumb');
+            if (hasThumb) {
+                img.src = imgA.href;
+                imgA.href = imgA.href.replace('_thumb', '');
+            }
+            else {
+                img.src = imgA.href.replace(/(\.[^.]+$)/, '_thumb$1');
+            }
+        }
+        else {
+            img.src = imgA.href;
+        }
 
         if (!imgA.href.includes(imgA.textContent)) { imgA.title = imgA.textContent; }
         imgA.textContent = '';
