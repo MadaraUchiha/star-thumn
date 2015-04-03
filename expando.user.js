@@ -24,7 +24,7 @@
     if (!String.prototype.includes) {
         String.prototype.includes = function(needle) {
             return this.indexOf(needle) !== -1;
-        }
+        };
     }
 
     function xhr(url, method, data) {
@@ -74,7 +74,7 @@
         var imgA = li.querySelector('a').cloneNode(true);
         var starSpan = li.querySelector('span').cloneNode(true);
 
-        var voteSpan = starSpan.querySelector('.img.vote')
+        var voteSpan = starSpan.querySelector('.img.vote');
         voteSpan.textContent = starSpan.classList.contains('owner-star') ? '✪' : '★';
         voteSpan.classList.remove('img');
 
@@ -113,7 +113,6 @@
     }
 
     function renderAllThumbnails() {
-        console.info('RENDERING EVERYTHING');
         emptyElement(thumbs);
 
         var thumbnailWorthy = [].filter.call(stars.querySelectorAll('a'), function justThoseWithImageLinks(link) {
@@ -137,8 +136,7 @@
             })
             .then(function(images) {
                 images.forEach(thumbs.appendChild.bind(thumbs));
-            })
-            .then(console.info.bind(console));
+            });
     }
 
     (new MutationObserver(renderAllThumbnails))
