@@ -5,11 +5,13 @@
 }
 #thumbs {
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 #thumbs li {
     list-style-type: none;
     padding: 10px;
-    max-width: 25%;
+    width: 25%;
 }
 
 #thumbs li > span, .hidden {
