@@ -32,7 +32,7 @@ You can find the repository that holds the code **[can be found here][3]**. To i
 ## Extra
 Please note that this is still under development, and not all features are guaranteed to work properly.
 
-If you have features, suggestions, bugs, ideas, rants, chickens, praise to the almighty Madara-sama, or anything else you'd like to say, feel free to post an answer below, or open a ticket **[here][5]**.
+If you have features, suggestions, bugs, ideas, rants, chickens, praise to the almighty Madara-sama, or anything else you'd like to say, feel free to post a comment below, or open a ticket **[here][5]**.
 
 
   [1]: http://i.stack.imgur.com/p1SB7.png
