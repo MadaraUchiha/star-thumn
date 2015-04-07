@@ -25,6 +25,8 @@
 #thumbs img {
     max-height: 100px;
     max-width: 100px;
+    display: block;
+    margin: auto;
 }
 
 #thumbs .sidebar-vote.stars {
