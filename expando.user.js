@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/MadaraUchiha/star-thumn/master/style.css
-// @version      0.2.11
+// @version      0.3
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -73,6 +73,7 @@
 
         var imgA = li.querySelector('a').cloneNode(true);
         var starSpan = li.querySelector('span').cloneNode(true);
+        var menuSpan = li.querySelector('.quick-unstar').cloneNode(true);
 
         var voteSpan = starSpan.querySelector('.img.vote');
         voteSpan.textContent = starSpan.classList.contains('owner-star') ? '✪' : '★';
@@ -100,6 +101,7 @@
         imgA.appendChild(img);
         figure.appendChild(imgA);
         figure.appendChild(starSpan);
+        figure.appendChild(menuSpan);
 
         newLi.appendChild(figure);
 

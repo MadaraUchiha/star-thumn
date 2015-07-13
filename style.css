@@ -7,10 +7,11 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    padding: 10px;
 }
 #thumbs li {
     list-style-type: none;
-    padding: 10px;
+    margin-right: 10px;
 }
 
 #thumbs li > span, .hidden {
@@ -27,18 +28,25 @@
     max-width: 100px;
 }
 
-#thumbs .sidebar-vote.stars {
-    transform-origin: top left;
+#thumbs figure > span {
     position: absolute;
-    top: 2px;
-    left: 2px;
     text-shadow: 0 0 2px black, 0 0 2px black;
     opacity: 0;
     color: white;
     cursor: pointer;
     transition: all .3s;
 }
-#thumbs figure:hover .sidebar-vote.stars {
+#thumbs .sidebar-vote.stars {
+    transform-origin: top left;
+    top: 2px;
+    left: 2px;
+}
+#thumbs .quick-unstar {
+    transform-origin: bottom right;
+    bottom: 2px;
+    right: 2px;
+}
+#thumbs figure:hover > span {
     opacity: 1;
     transform: scale(1.2);
 }
