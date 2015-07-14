@@ -12,6 +12,7 @@
 #thumbs li {
     list-style-type: none;
     margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 #thumbs li > span, .hidden {
