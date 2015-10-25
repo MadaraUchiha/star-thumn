@@ -9,7 +9,7 @@
 // @grant        GM_getResourceText
 // ==/UserScript==
 
-(function(){window.addEventListener('load', function() {
+window.addEventListener('load', function() {
     'use strict';
 
     var cssTxt  = GM_getResourceText ("STYLE");
@@ -146,4 +146,4 @@
 
     setTimeout(renderAllThumbnails, 0);
 
-});})();
+});
