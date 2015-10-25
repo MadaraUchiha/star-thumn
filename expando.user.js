@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/MadaraUchiha/star-thumn/master/style.css
-// @version      0.3.1
+// @version      0.3.2
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -9,7 +9,7 @@
 // @grant        GM_getResourceText
 // ==/UserScript==
 
-(function(){window.addEventListener('load', function() {
+window.addEventListener('load', function() {
     'use strict';
 
     var cssTxt  = GM_getResourceText ("STYLE");
@@ -146,4 +146,4 @@
 
     setTimeout(renderAllThumbnails, 0);
 
-});})();
+});
