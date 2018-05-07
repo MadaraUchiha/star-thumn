@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
-// @resource     STYLE  https://rawgit.com/MadaraUchiha/star-thumn/master/style.css
-// @version      0.3.2
+// @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
+// @version      0.3.3
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -64,6 +64,33 @@ window.addEventListener('load', function() {
         return isOnebox(li.id.replace('summary_', ''));
     }
 
+    function lightbox(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var lightboxImage = document.getElementById('lightbox-image');
+        if (!lightboxImage) {
+            var lightboxContainer = document.createElement('div');
+            lightboxContainer.id = 'lightbox-container';
+            var lightbox = document.createElement('div');
+            lightbox.id = 'lightbox';
+            lightboxImage = document.createElement('img');
+            lightboxImage.addEventListener('click', function () {
+                lightboxImage.classList.toggle('zoomed');
+            });
+            var filler1 = document.createElement('div'),
+                filler2 = document.createElement('div');
+            filler1.classList.add('filler');
+            filler2.classList.add('filler');
+            lightbox.appendChild(lightboxImage);
+            lightboxContainer.appendChild(filler1);
+            lightboxContainer.appendChild(lightbox);
+            lightboxContainer.appendChild(filler2);
+            document.body.appendChild(lightboxContainer);
+        }
+        lightboxImage.src = e.target.parentElement.href;
+        return true;
+    }
+
     function toThumbnail(li) {
         // Purely so that the current scripts won't break!
         var newLi = document.createElement('li');
@@ -87,12 +114,17 @@ window.addEventListener('load', function() {
                 imgA.href = imgA.href.replace('_thumb', '');
             }
             else {
-                img.src = imgA.href.replace(/(\.[^.]+$)/, '_thumb$1');
+                img.src = imgA.href.replace(/\.[^.]+$/, '_thumb$&');
             }
+        }
+        else if (imgA.href.includes('i.imgur.com') || imgA.href.includes('i.stack.imgur.com')) {
+            img.src = imgA.href.replace(/\.[^.]+$/, 't$&');
         }
         else {
             img.src = imgA.href;
         }
+
+        img.addEventListener('click', lightbox);
 
         //         Not dots! This is a single character! vvv
         if (!imgA.href.includes(imgA.textContent.replace('…', ''))) { imgA.title = imgA.textContent; }
