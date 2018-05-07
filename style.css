@@ -82,11 +82,13 @@
 }
 
 #lightbox > img {
-    height: 90vh;
+    max-height: 90vh;
+    max-width: 90vw;
     cursor: zoom-in;
 }
 
 #lightbox > img.zoomed {
-    height: initial;
+    max-height: initial;
+    max-width: initial;
     cursor: zoom-out;
 }
