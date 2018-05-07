@@ -58,3 +58,34 @@
 #thumbs .sidebar-vote.stars.user-star .vote {
     color: gold;
 }
+
+#lightbox-container {
+    top: 0;
+    height: 100vh;
+    position: fixed;
+    backdrop-filter: brightness(50%);
+    width: 100vw;
+    z-index: 1;
+    display: flex;
+    flex-flow: column;
+}
+
+#lightbox-container > div.filler {
+    flex: 1 0 5vh;
+}
+
+#lightbox {
+    flex: 0 1 auto;
+    overflow: auto;
+    margin: 0 auto;
+}
+
+#lightbox > img {
+    height: 90vh;
+    cursor: zoom-in;
+}
+
+#lightbox > img.zoomed {
+    height: initial;
+	cursor: zoom-out;
+}
