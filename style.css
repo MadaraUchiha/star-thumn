@@ -71,7 +71,7 @@
 }
 
 #lightbox-container > div.filler {
-    flex: 1 0 5vh;
+    flex: 1 0 auto;
 }
 
 #lightbox {
