@@ -87,5 +87,5 @@
 
 #lightbox > img.zoomed {
     height: initial;
-	cursor: zoom-out;
+    cursor: zoom-out;
 }
