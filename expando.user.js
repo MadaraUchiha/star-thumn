@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.3
+// @version      0.3.4
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -67,15 +67,22 @@ window.addEventListener('load', function() {
     function lightbox(e) {
         e.preventDefault();
         e.stopPropagation();
-        var lightboxImage = document.getElementById('lightbox-image');
+        var lightboxImage = document.getElementById('lightbox-image'),
+            lightboxContainer = document.getElementById('lightbox-container');
         if (!lightboxImage) {
-            var lightboxContainer = document.createElement('div');
+            lightboxContainer = document.createElement('div');
             lightboxContainer.id = 'lightbox-container';
             var lightbox = document.createElement('div');
             lightbox.id = 'lightbox';
             lightboxImage = document.createElement('img');
+			lightboxImage.id = 'lightbox-image';
             lightboxImage.addEventListener('click', function () {
                 lightboxImage.classList.toggle('zoomed');
+            });
+            lightboxContainer.addEventListener('click', function(e) {
+                if (e.target !== lightboxImage) {
+                    lightboxContainer.style.display = 'none';
+                }
             });
             var filler1 = document.createElement('div'),
                 filler2 = document.createElement('div');
@@ -87,6 +94,7 @@ window.addEventListener('load', function() {
             lightboxContainer.appendChild(filler2);
             document.body.appendChild(lightboxContainer);
         }
+        lightboxContainer.style.display = 'flex';
         lightboxImage.src = e.target.parentElement.href;
         return true;
     }
