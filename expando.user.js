@@ -186,4 +186,28 @@ window.addEventListener('load', function() {
 
     setTimeout(renderAllThumbnails, 0);
 
+    function addLightboxHandler(mutations) {
+        for (var i = 0; i < mutations.length; i++) {
+            var mutation = mutations[i];
+            if (mutation.type !== 'childList') {
+                break;
+            }
+            for (var j = 0; j < mutation.addedNodes.length; j++) {
+                var images = mutation.addedNodes[j].querySelectorAll('img');
+                for (var k = 0; k < images.length; k++) {
+                    images[k].addEventListener('click', lightbox);
+                }
+            }
+        }
+    }
+
+    (new MutationObserver(addLightboxHandler))
+        .observe(document.getElementById('chat'), {childList: true, subTree: true, characterData: true, attributes: true});
+
+    setTimeout(function() {
+        addLightboxHandler([].map.call(document.getElementsByClassName('user-image'), function (element) {
+            return { type: 'childList', target: element.parent };
+        }));
+    }, 0);
+
 });
