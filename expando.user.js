@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.7
+// @version      0.3.8
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -13,12 +13,10 @@
 (function() {
     'use strict';
 
-    var cssTxt  = GM_getResourceText ("STYLE");
-    GM_addStyle (cssTxt);
+    GM_addStyle(GM_getResourceText("STYLE"));
 
-
-    var stars = document.getElementById('starred-posts');
-    var thumbs = document.createElement('div');
+    var stars = document.getElementById('starred-posts'),
+        thumbs = document.createElement('div');
     thumbs.id = 'thumbs';
     stars.appendChild(thumbs);
 
@@ -95,6 +93,7 @@
             lightboxContainer.appendChild(filler2);
             document.body.appendChild(lightboxContainer);
         }
+        lightboxImage.classList.remove('zoomed');
         lightboxContainer.style.display = 'flex';
         lightboxImage.src = /\.[^/]+$/.test(e.target.parentElement.href) ? e.target.parentElement.href : e.target.src;
         return true;
@@ -206,8 +205,8 @@
         .observe(document.getElementById('chat'), {childList: true, subTree: true, characterData: true, attributes: true});
 
     setTimeout(function() {
-        addLightboxHandler([].map.call(document.getElementsByClassName('user-image'), function (element) {
-            return { type: 'childList', target: element.parent };
-        }));
+        addLightboxHandler([{ type: 'childList', addedNodes: [].map.call(document.getElementsByClassName('user-image'), function (element) {
+            return element.parent;
+        })}]);
     }, 0);
 })();
