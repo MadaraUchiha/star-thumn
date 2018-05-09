@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.5
+// @version      0.3.6
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -95,7 +95,7 @@ window.addEventListener('load', function() {
             document.body.appendChild(lightboxContainer);
         }
         lightboxContainer.style.display = 'flex';
-        lightboxImage.src = e.target.parentElement.href;
+        lightboxImage.src = /\.[^/]+$/.test(e.target.parentElement.href) ? e.target.parentElement.href : e.target.src;
         return true;
     }
 
