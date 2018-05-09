@@ -1,15 +1,16 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.6
+// @version      0.3.7
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
+// @run-at       document-idle
 // ==/UserScript==
 
-window.addEventListener('load', function() {
+(function() {
     'use strict';
 
     var cssTxt  = GM_getResourceText ("STYLE");
@@ -209,5 +210,4 @@ window.addEventListener('load', function() {
             return { type: 'childList', target: element.parent };
         }));
     }, 0);
-
-});
+})();
