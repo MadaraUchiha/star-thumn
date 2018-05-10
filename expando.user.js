@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.9
+// @version      0.3.10
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -20,12 +20,6 @@
         rendering = false;
     thumbs.id = 'thumbs';
     stars.appendChild(thumbs);
-
-    if (!String.prototype.includes) {
-        String.prototype.includes = function(needle) {
-            return this.indexOf(needle) !== -1;
-        };
-    }
 
     function xhr(url, method, data) {
         data = data || {};
@@ -105,38 +99,23 @@
         var newLi = document.createElement('li');
         newLi.id = li.id;
 
-        var figure = document.createElement('figure');
-
-        var imgA = li.querySelector('a').cloneNode(true);
-        var starSpan = li.querySelector('span').cloneNode(true);
-        var menuSpan = li.querySelector('.quick-unstar').cloneNode(true);
+        var figure = document.createElement('figure'),
+            imgA = li.querySelector('a').cloneNode(true),
+            starSpan = li.querySelector('span').cloneNode(true),
+            menuSpan = li.querySelector('.quick-unstar').cloneNode(true);
 
         var voteSpan = starSpan.querySelector('.img.vote');
         voteSpan.textContent = starSpan.classList.contains('owner-star') ? '✪' : '★';
         voteSpan.classList.remove('img');
 
         var img = new Image();
-        if (imgA.href.includes('googledrive.com')) {
-            var hasThumb = imgA.href.includes('_thumb');
-            if (hasThumb) {
-                img.src = imgA.href;
-                imgA.href = imgA.href.replace('_thumb', '');
-            }
-            else {
-                img.src = imgA.href.replace(/\.[^.]+$/, '_thumb$&');
-            }
-        }
-        else if (imgA.href.includes('i.imgur.com') || imgA.href.includes('i.stack.imgur.com')) {
-            img.src = imgA.href.replace(/\.[^.]+$/, 't$&');
-        }
-        else {
-            img.src = imgA.href;
-        }
-
+        img.src = /i\.(?:stack\.)?imgur\.com/.test(imgA.href) ? imgA.href.replace(/\.[^.]+$/, 't$&') : imgA.href;
         img.addEventListener('click', lightbox);
 
-        //         Not dots! This is a single character! vvv
-        if (!imgA.href.includes(imgA.textContent.replace('…', ''))) { imgA.title = imgA.textContent; }
+        //       Not dots! This is a single character! vvv
+        if (imgA.href.indexOf(imgA.textContent.replace('…', '')) !== -1) {
+            imgA.title = imgA.textContent;
+        }
         imgA.textContent = '';
 
         imgA.appendChild(img);
@@ -155,8 +134,8 @@
         }
     }
 
-    function renderAllThumbnails() {
-        if (rendering) {
+    function renderAllThumbnails(mutations) {
+        if (rendering || mutations && (!mutations.length || mutations[0].target.tagName === 'A')) {
             return;
         }
         rendering = true;
@@ -171,23 +150,17 @@
         Promise.all(thumbnailWorthy)
             .then(function(thumbnailWorthyArray) {
                 return thumbnailWorthyArray.filter(isLiOnebox);
-            })
-            .then(function prepareGround(confirmedThumbnails) {
-                confirmedThumbnails.forEach(function(li) {
-                    li.classList.add('hidden');
-                });
+            }).then(function prepareGround(confirmedThumbnails) {
+                confirmedThumbnails.forEach(function(li) { li.classList.add('hidden'); });
                 return confirmedThumbnails;
-            })
-            .then(function(confirmedThumbnails) {
+            }).then(function(confirmedThumbnails) {
                 return confirmedThumbnails.map(toThumbnail);
-            })
-            .then(function(images) {
+            }).then(function(images) {
                 images.forEach(thumbs.appendChild.bind(thumbs));
             }).then(function() { rendering = false; });
     }
 
-    (new MutationObserver(renderAllThumbnails))
-        .observe(stars, {childList: true, attributes: true, subtree: true});
+    (new MutationObserver(renderAllThumbnails)).observe(stars, {childList: true, attributes: true, subtree: true});
 
     setTimeout(renderAllThumbnails, 0);
 
@@ -203,8 +176,7 @@
         }
     }
 
-    (new MutationObserver(addLightboxHandler))
-        .observe(document.getElementById('chat'), {childList: true, attributes: true, subtree: true});
+    (new MutationObserver(addLightboxHandler)).observe(document.getElementById('chat'), {childList: true, attributes: true, subtree: true});
 
     setTimeout(function() {
         addLightboxHandler([{ type: 'childList', addedNodes: [].map.call(document.getElementsByClassName('user-image'), function (element) {
