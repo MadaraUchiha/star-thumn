@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.8
+// @version      0.3.9
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -15,8 +15,9 @@
 
     GM_addStyle(GM_getResourceText("STYLE"));
 
-    var stars = document.getElementById('starred-posts'),
-        thumbs = document.createElement('div');
+    var stars = document.getElementById('starred-posts').children[0],
+        thumbs = document.createElement('div'),
+        rendering = false;
     thumbs.id = 'thumbs';
     stars.appendChild(thumbs);
 
@@ -54,7 +55,7 @@
     function isOnebox(msgId) {
         return xhr('/message/' + msgId, 'POST', {plain: true})
             .then(function(response) {
-                //          vvvvvvvvvvvvvv just URL vvvvvvvvvvvvvvv vvvvvvvvvvvvvvvvv just linked image vvvvvvvvvvvvvvvvv
+                //          vvvvvvvvvvv just URL vvvvvvvvvvvv vvvvvvvvvvvvvv just linked image vvvvvvvvvvvvv
                 return /^(?:!?https?:\/\/[^ ]+\.(?:jpe?g|png)|\[[^]]+\]\(!?https?:\/\/[^ ]+\.(?:jpe?g|png)\))$/.test(response);
             });
     }
@@ -155,6 +156,10 @@
     }
 
     function renderAllThumbnails() {
+        if (rendering) {
+            return;
+        }
+        rendering = true;
         emptyElement(thumbs);
 
         var thumbnailWorthy = [].filter.call(stars.querySelectorAll('a'), function justThoseWithImageLinks(link) {
@@ -178,20 +183,17 @@
             })
             .then(function(images) {
                 images.forEach(thumbs.appendChild.bind(thumbs));
-            });
+            }).then(function() { rendering = false; });
     }
 
     (new MutationObserver(renderAllThumbnails))
-        .observe(stars.parentNode, {childList: true, subTree: true, characterData: true, attributes: true});
+        .observe(stars, {childList: true, attributes: true, subtree: true});
 
     setTimeout(renderAllThumbnails, 0);
 
     function addLightboxHandler(mutations) {
         for (var i = 0; i < mutations.length; i++) {
             var mutation = mutations[i];
-            if (mutation.type !== 'childList') {
-                break;
-            }
             for (var j = 0; j < mutation.addedNodes.length; j++) {
                 var images = mutation.addedNodes[j].querySelectorAll('img');
                 for (var k = 0; k < images.length; k++) {
@@ -202,11 +204,11 @@
     }
 
     (new MutationObserver(addLightboxHandler))
-        .observe(document.getElementById('chat'), {childList: true, subTree: true, characterData: true, attributes: true});
+        .observe(document.getElementById('chat'), {childList: true, attributes: true, subtree: true});
 
     setTimeout(function() {
         addLightboxHandler([{ type: 'childList', addedNodes: [].map.call(document.getElementsByClassName('user-image'), function (element) {
-            return element.parent;
+            return element.parentNode;
         })}]);
     }, 0);
 })();
