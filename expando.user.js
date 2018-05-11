@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.10
+// @version      0.3.11
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -58,7 +58,7 @@
         return isOnebox(li.id.replace('summary_', ''));
     }
 
-    function lightbox(e) {
+    function lightbox(e, img) {
         e.preventDefault();
         e.stopPropagation();
         var lightboxImage = document.getElementById('lightbox-image'),
@@ -110,7 +110,7 @@
 
         var img = new Image();
         img.src = /i\.(?:stack\.)?imgur\.com/.test(imgA.href) ? imgA.href.replace(/\.[^.]+$/, 't$&') : imgA.href;
-        img.addEventListener('click', lightbox);
+        img.addEventListener('click', function (e) { lightbox(e, img); });
 
         //       Not dots! This is a single character! vvv
         if (imgA.href.indexOf(imgA.textContent.replace('…', '')) !== -1) {
@@ -135,7 +135,7 @@
     }
 
     function renderAllThumbnails(mutations) {
-        if (rendering || mutations && (!mutations.length || mutations[0].target.tagName === 'A')) {
+        if (rendering || mutations && mutations.every(function (mutation) { return mutation.target.tagName !== 'UL'; })) {
             return;
         }
         rendering = true;
@@ -168,6 +168,9 @@
         for (var i = 0; i < mutations.length; i++) {
             var mutation = mutations[i];
             for (var j = 0; j < mutation.addedNodes.length; j++) {
+                if (!mutation.addedNodes[j].querySelectorAll) {
+                    continue;
+                }
                 var images = mutation.addedNodes[j].querySelectorAll('img');
                 for (var k = 0; k < images.length; k++) {
                     images[k].addEventListener('click', lightbox);
