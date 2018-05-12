@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.11
+// @version      0.3.12
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -49,8 +49,8 @@
     function isOnebox(msgId) {
         return xhr('/message/' + msgId, 'POST', {plain: true})
             .then(function(response) {
-                //          vvvvvvvvvvv just URL vvvvvvvvvvvv vvvvvvvvvvvvvv just linked image vvvvvvvvvvvvv
-                return /^(?:!?https?:\/\/[^ ]+\.(?:jpe?g|png)|\[[^]]+\]\(!?https?:\/\/[^ ]+\.(?:jpe?g|png)\))$/.test(response);
+                //          vvvvvvvvvv just URL vvvvvvvvvvv v forced onebox v vvvvvvvvvvvvvv just linked image vvvvvvvvvvvvv
+                return /^(?:https?:\/\/[^ ]+\.(?:jpe?g|png)|!https?:\/\/[^ ]+|\[[^]]+\]\(!?https?:\/\/[^ ]+\.(?:jpe?g|png)\))$/.test(response);
             });
     }
 
