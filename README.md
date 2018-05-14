@@ -35,5 +35,5 @@ Please note that this is still under development, and not all features are guara
 
   [1]: http://i.stack.imgur.com/p1SB7.png
   [2]: http://i.stack.imgur.com/A0I18.gif
-  [3]: https://github.com/MadaraUchiha/star-thumn
-  [4]: https://github.com/MadaraUchiha/star-thumn/raw/master/expando.user.js
+  [3]: https://github.com/somebody1234/star-thumn
+  [4]: https://github.com/somebody1234/star-thumn/raw/master/expando.user.js

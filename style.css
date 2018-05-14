@@ -6,6 +6,7 @@
 #thumbs {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     padding: 10px;
 }
@@ -57,4 +58,38 @@
 
 #thumbs .sidebar-vote.stars.user-star .vote {
     color: gold;
+}
+
+#lightbox-container {
+    top: 0;
+    height: 100vh;
+    position: fixed;
+    backdrop-filter: brightness(50%);
+    width: 100vw;
+    z-index: 1;
+    display: flex;
+    flex-flow: column;
+}
+
+#lightbox-container > div.filler {
+    flex: 1 0 auto;
+}
+
+#lightbox {
+    flex: 0 1 auto;
+    overflow: auto;
+    margin: 0 auto;
+    max-width: 90%;
+}
+
+#lightbox > img {
+    max-height: 90vh;
+    max-width: 90vw;
+    cursor: zoom-in;
+}
+
+#lightbox > img.zoomed {
+    max-height: initial;
+    max-width: initial;
+    cursor: zoom-out;
 }
