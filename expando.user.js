@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.12
+// @version      0.3.13
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @run-at       document-idle
+// @updateURL    https://rawgit.com/somebody1234/star-thumn/raw/master/expando.user.js
 // ==/UserScript==
 
 (function() {
@@ -43,6 +44,16 @@
             req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             req.send(serialize(data));
+        });
+    }
+
+    // from https://stackoverflow.com/a/47087343
+    function returnImageIfExists(link) {
+        return new Promise(function(resolve, reject) {
+            var image = new Image();
+            image.addEventListener('load', function () { resolve(link); });
+            image.addEventListener('error', function () { resolve(null); });
+            image.src = link.href || link.src;
         });
     }
 
@@ -102,7 +113,7 @@
         var figure = document.createElement('figure'),
             imgA = li.querySelector('a').cloneNode(true),
             starSpan = li.querySelector('span').cloneNode(true),
-            menuSpan = li.querySelector('.quick-unstar').cloneNode(true);
+            menuSpan = li.querySelector('.quick-unstar') ? li.querySelector('.quick-unstar').cloneNode(true) : null;
 
         var voteSpan = starSpan.querySelector('.img.vote');
         voteSpan.textContent = starSpan.classList.contains('owner-star') ? '✪' : '★';
@@ -121,7 +132,9 @@
         imgA.appendChild(img);
         figure.appendChild(imgA);
         figure.appendChild(starSpan);
-        figure.appendChild(menuSpan);
+        if (menuSpan) {
+            figure.appendChild(menuSpan);
+        }
 
         newLi.appendChild(figure);
 
@@ -141,15 +154,18 @@
         rendering = true;
         emptyElement(thumbs);
 
-        var thumbnailWorthy = [].filter.call(stars.querySelectorAll('a'), function justThoseWithImageLinks(link) {
-            return /(?:jpe?g|png)$/.test(link.href);
-        })
-        .map(function getParent(link) {
-            return link.parentNode;
+        var thumbnailWorthy = [].filter.call(stars.querySelectorAll('a:not(.permalink):not(:nth-last-child(2))'), function justThoseWithImageLinks(link) {
+            return /(?:jpe?g|png)$/.test(link.href) || (!/^\/users\/\d+\//.test(link.href) && link.parentNode.childNodes[2].wholeText === '\n            !');
+        }).filter(function parentIsLiOnebox(link) {
+            return isLiOnebox(link.parentNode);
+        }).map(function test(link) {
+            return returnImageIfExists(link);
         });
         Promise.all(thumbnailWorthy)
             .then(function(thumbnailWorthyArray) {
-                return thumbnailWorthyArray.filter(isLiOnebox);
+                return thumbnailWorthyArray.filter(function (link) { return link !== null; });
+            }).then(function getParent(confirmedThumbnails) {
+                return confirmedThumbnails.map(function (link) { return link.parentNode; });
             }).then(function prepareGround(confirmedThumbnails) {
                 confirmedThumbnails.forEach(function(li) { li.classList.add('hidden'); });
                 return confirmedThumbnails;
@@ -173,6 +189,13 @@
                 }
                 var images = mutation.addedNodes[j].querySelectorAll('img');
                 for (var k = 0; k < images.length; k++) {
+                    (function (image) {
+                        returnImageIfExists(image).then(function (result) {
+                            if (result === null) {
+                                image.src = 'https://cdn-chat.sstatic.net/chat/img/ImageNotFound.png';
+                            }
+                        });
+                    })(images[k]);
                     images[k].addEventListener('click', lightbox);
                 }
             }
