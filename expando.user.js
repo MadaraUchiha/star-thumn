@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
-// @resource     STYLE  https://rawgit.com/somebody1234/star-thumn/master/style.css
-// @version      0.3.14
+// @resource     STYLE  https://rawgit.com/MadaraUchiha/star-thumn/master/style.css
+// @version      0.3.15
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @run-at       document-idle
-// @updateURL    https://rawgit.com/somebody1234/star-thumn/raw/master/expando.user.js
+// @updateURL    https://rawgit.com/MadaraUchiha/star-thumn/raw/master/expando.user.js
 // ==/UserScript==
 
 (function() {
@@ -26,11 +26,6 @@
     function xhr(url, method, data) {
         method = method || 'GET';
 
-        var serialize = function(obj) {
-            return Object.keys(obj).map(function(key) {
-                return key + '=' + obj[key];
-            }).join('&');
-        };
         return new Promise(function(resolve, reject) {
             var req = new XMLHttpRequest();
             req.onload = function() { resolve(req.responseText); };
