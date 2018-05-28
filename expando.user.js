@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/MadaraUchiha/star-thumn/master/style.css
-// @version      0.3.17
+// @version      0.3.18
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -177,7 +177,7 @@
                 if (!node.querySelectorAll)
                     continue;
                 for (const message of node.querySelectorAll('.content')) {
-                    if (message.children.length === 1 && message.children[0].tagName === 'A' && message.children[0].children.length === 0) {
+                    if (message.children.length === 1 === message.childNodes.length && message.children[0].tagName === 'A' && message.children[0].children.length === 0) {
                         var link = message.children[0];
                         if (/\.(?:jpe?g|png)$/.test(link.href)) {
                             var image = $c('img');
@@ -195,8 +195,6 @@
                             image.src = 'https://cdn-chat.sstatic.net/chat/img/ImageNotFound.png';
                         }
                     });
-                    if (/i\.(?:stack\.)?imgur\.com/.test(image.src))
-                        image.src = image.src.replace(/\.[^.]+$/, 'm$&');
                     image.addEventListener('click', lightbox);
                 }
             }
