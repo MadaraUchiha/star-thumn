@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/MadaraUchiha/star-thumn/master/style.css
-// @version      0.3.15
+// @version      0.3.16
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -150,7 +150,7 @@
         emptyElement(thumbs);
 
         var thumbnailWorthy = Array.from(stars.querySelectorAll('a:not(.permalink):not(:nth-last-child(2))')).filter(function justThoseWithImageLinks(link) {
-            return (/(?:jpe?g|png)$/.test(link.href) || (!/^\/users\/\d+\//.test(link.href) && link.parentNode.childNodes[2].wholeText === '\n            !')) && isLiOnebox(link.parentNode);
+            return (/\.(?:jpe?g|png)$/.test(link.href) || (!/^\/users\/\d+\//.test(link.href) && link.parentNode.childNodes[2].wholeText === '\n            !')) && isLiOnebox(link.parentNode);
         }).map(returnImageIfExists);
         Promise.all(thumbnailWorthy)
             .then(function(thumbnailWorthyArray) {
@@ -171,27 +171,41 @@
 
     setTimeout(renderAllThumbnails, 0);
 
-    function addLightboxHandler(mutations) {
+    function handleChatMessage(mutations) {
         for (const mutation of mutations) {
             for (const node of mutation.addedNodes) {
                 if (!node.querySelectorAll)
                     continue;
+                for (const message of node.querySelectorAll('.content')) {
+                    if (message.children.length === 1 && message.children[0].tagName === 'A' && message.children[0].children.length === 0) {
+                        var link = message.children[0];
+                        if (/\.(?:jpe?g|png)$/.test(link.href)) {
+                            var image = $c('img');
+                            image.src = link.href;
+                            image.title = link.innerText;
+                            link.innerText = '';
+                            link.appendChild(image);
+                        }
+                    }
+                }
                 for (const image of node.querySelectorAll('img')) {
                     returnImageIfExists(image).then(function (result) {
                         if (!result) {
                             image.src = 'https://cdn-chat.sstatic.net/chat/img/ImageNotFound.png';
                         }
                     });
+                    if (/i\.(?:stack\.)?imgur\.com/.test(image.src))
+                        image.src = image.src.replace(/\.[^.]+$/, 'm$&');
                     image.addEventListener('click', lightbox);
                 }
             }
         }
     }
 
-    (new MutationObserver(addLightboxHandler)).observe(document.getElementById('chat'), {childList: true, attributes: true, subtree: true});
+    (new MutationObserver(handleChatMessage)).observe(document.getElementById('chat'), {childList: true, attributes: true, subtree: true});
 
     setTimeout(function() {
-        addLightboxHandler([{ type: 'childList', addedNodes: Array.from(document.getElementsByClassName('user-image')).map(function (element) {
+        handleChatMessage([{ type: 'childList', addedNodes: Array.from(document.getElementsByClassName('user-image')).map(function (element) {
             return element.parentNode;
         })}]);
     }, 0);
