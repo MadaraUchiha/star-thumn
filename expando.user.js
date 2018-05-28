@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Star Thumbnail Expando
 // @resource     STYLE  https://rawgit.com/MadaraUchiha/star-thumn/master/style.css
-// @version      0.3.16
+// @version      0.3.17
 // @match        *://chat.stackexchange.com/*
 // @match        *://chat.stackoverflow.com/*
 // @match        *://chat.meta.stackexchange.com/*
@@ -183,12 +183,13 @@
                             var image = $c('img');
                             image.src = link.href;
                             image.title = link.innerText;
+                            image.classList.add('user-image');
                             link.innerText = '';
                             link.appendChild(image);
                         }
                     }
                 }
-                for (const image of node.querySelectorAll('img')) {
+                for (const image of node.querySelectorAll('img.user-image')) {
                     returnImageIfExists(image).then(function (result) {
                         if (!result) {
                             image.src = 'https://cdn-chat.sstatic.net/chat/img/ImageNotFound.png';
